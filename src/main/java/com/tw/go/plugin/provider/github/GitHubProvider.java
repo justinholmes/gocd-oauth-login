@@ -5,11 +5,9 @@ import com.tw.go.plugin.PluginSettings;
 import com.tw.go.plugin.User;
 import com.tw.go.plugin.provider.Provider;
 import org.apache.commons.lang.StringUtils;
+import org.brickred.socialauth.AuthProvider;
 import org.brickred.socialauth.Profile;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHUser;
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.PagedSearchIterable;
+import org.kohsuke.github.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,23 +77,25 @@ public class GitHubProvider implements Provider {
     }
 
     @Override
-    public boolean authorize(PluginSettings pluginSettings, User user) {
-        if(StringUtils.isEmpty(pluginSettings.getUsernameRegex())) {
-            return true;
-        } else {
-            return isAMemberOfOrganization(pluginSettings, user);
-        }
+    public boolean authorize(PluginSettings pluginSettings, User user, AuthProvider authProvider) {
+        return StringUtils.isEmpty(pluginSettings.getUsernameRegex()) || isAMemberOfOrganization(pluginSettings, user, authProvider);
     }
 
-    private boolean isAMemberOfOrganization(PluginSettings pluginSettings, User user) {
+    private boolean isAMemberOfOrganization(PluginSettings pluginSettings, User user, AuthProvider authProvider) {
         boolean result = false;
         try {
-            GitHub github = getGitHub(pluginSettings);
-
+            String key = authProvider.getAccessGrant().getKey();
+            GitHub github = GitHub.connect(user.getDisplayName(), key);
             GHOrganization organization = github.getOrganization(pluginSettings.getUsernameRegex());
-            GHUser ghUser = github.getUser(user.getUsername());
+            GHPersonSet<GHOrganization> myOrganizations = github.getMyself().getAllOrganizations();
+            LOGGER.debug("Matching organisation " + organization.getLogin());
+            for (GHOrganization myOrganization : myOrganizations) {
+                LOGGER.debug("User's organisations " + myOrganization.getLogin());
+                if (myOrganization.getId() == organization.getId()) {
+                    result = true;
+                }
+            }
 
-            result = ghUser.isMemberOf(organization);
         } catch (Exception e) {
             LOGGER.warn("Error occurred while trying to check if user is member of organization", e);
         }

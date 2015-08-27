@@ -251,7 +251,7 @@ public class OAuthLoginPlugin implements GoPlugin {
             Profile profile = authProvider.getUserProfile();
             User user = provider.getUser(profile);
 
-            if (provider.authorize(pluginSettings, user)) {
+            if (provider.authorize(pluginSettings, user, authProvider)) {
                 authenticateUser(user);
             }
 
