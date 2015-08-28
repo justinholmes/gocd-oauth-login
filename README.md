@@ -1,6 +1,11 @@
 # GoCD OAuth Login
 This is GoCD's Authentication plugin that allows users to login using OAuth.
 
+This fork actually allows the ability to filter based on user's private organisations
+The previous version of this plugin used a fixed auth token to check the user's organisations,
+which only shows their public affiliations. By using the authorisation that comes from the login
+process, we can access their private organisations as well.
+
 ## Currently supported
 * GitHub
 * Google
