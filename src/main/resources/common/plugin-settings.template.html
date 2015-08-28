@@ -31,5 +31,14 @@
 <div class="form_item_block">
     <label>Username Regular Expression:</label>
     <input type="text" ng-model="username_regex" ng-required="true"/>
+    <div class="contextual_help has_go_tip_right" title="This only works with Google"></div>
     <span class="form_error" ng-show="GOINPUTNAME[username_regex].$error.server">{{ GOINPUTNAME[username_regex].$error.server }}</span>
 </div>
+
+<div class="form_item_block">
+    <label>Organisation Name:</label>
+    <input type="text" ng-model="organisation_name" ng-required="true"/>
+    <div class="contextual_help has_go_tip_right" title="Insert your organisation name from Github to restrict login from users to that organisation."></div>
+    <span class="form_error" ng-show="GOINPUTNAME[organisation_name].$error.server">{{ GOINPUTNAME[organisation_name].$error.server }}</span>
+</div>
+

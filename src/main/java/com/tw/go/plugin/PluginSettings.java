@@ -9,15 +9,17 @@ public class PluginSettings {
     private String username;
     private String password;
     private String oauthToken;
+    private String organisationName;
     private String usernameRegex;
 
-    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String usernameRegex) {
+    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String organisationName, String usernameRegex) {
         this.serverBaseURL = serverBaseURL;
         this.consumerKey = consumerKey;
         this.consumerSecret = consumerSecret;
         this.username = username;
         this.password = password;
         this.oauthToken = oauthToken;
+        this.organisationName = organisationName;
         this.usernameRegex = usernameRegex;
     }
 
@@ -85,6 +87,14 @@ public class PluginSettings {
         return !isBlank(oauthToken);
     }
 
+    public String getOrganisationName() {
+        return organisationName;
+    }
+
+    public void setOrganisationName(String organisationName) {
+        this.organisationName = organisationName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,4 +124,5 @@ public class PluginSettings {
         result = 31 * result + (oauthToken != null ? oauthToken.hashCode() : 0);
         return result;
     }
+
 }

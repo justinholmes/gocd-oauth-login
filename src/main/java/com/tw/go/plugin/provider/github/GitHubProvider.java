@@ -78,7 +78,7 @@ public class GitHubProvider implements Provider {
 
     @Override
     public boolean authorize(PluginSettings pluginSettings, User user, AuthProvider authProvider) {
-        return StringUtils.isEmpty(pluginSettings.getUsernameRegex()) || isAMemberOfOrganization(pluginSettings, user, authProvider);
+        return StringUtils.isEmpty(pluginSettings.getOrganisationName()) || isAMemberOfOrganization(pluginSettings, user, authProvider);
     }
 
     private boolean isAMemberOfOrganization(PluginSettings pluginSettings, User user, AuthProvider authProvider) {
@@ -86,7 +86,7 @@ public class GitHubProvider implements Provider {
         try {
             String key = authProvider.getAccessGrant().getKey();
             GitHub github = GitHub.connect(user.getDisplayName(), key);
-            GHOrganization organization = github.getOrganization(pluginSettings.getUsernameRegex());
+            GHOrganization organization = github.getOrganization(pluginSettings.getOrganisationName());
             GHPersonSet<GHOrganization> myOrganizations = github.getMyself().getAllOrganizations();
             LOGGER.debug("Matching organisation " + organization.getLogin());
             for (GHOrganization myOrganization : myOrganizations) {
