@@ -12,7 +12,7 @@ public class PluginSettings {
     private String organisationName;
     private String usernameRegex;
 
-    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String organisationName, String usernameRegex) {
+    public PluginSettings(String serverBaseURL, String consumerKey, String consumerSecret, String username, String password, String oauthToken, String usernameRegex, String organisationName) {
         this.serverBaseURL = serverBaseURL;
         this.consumerKey = consumerKey;
         this.consumerSecret = consumerSecret;

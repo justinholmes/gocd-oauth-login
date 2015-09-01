@@ -89,9 +89,8 @@ public class GitHubProvider implements Provider {
         if (key == null || key.equals("")) {
             throw new IllegalArgumentException("Authprovider token cannot be null");
         }
-        boolean result = false;
         try {
-            
+
             GitHub github = GitHub.connect(user.getDisplayName(), key);
             GHOrganization organization = github.getOrganization(pluginSettings.getOrganisationName());
             GHPersonSet<GHOrganization> myOrganizations = github.getMyself().getAllOrganizations();
@@ -99,7 +98,7 @@ public class GitHubProvider implements Provider {
             for (GHOrganization myOrganization : myOrganizations) {
                 LOGGER.debug("User's organisations " + myOrganization.getLogin());
                 if (myOrganization.getId() == organization.getId()) {
-                    result = true;
+                    return true;
                 }
             }
 
@@ -107,7 +106,7 @@ public class GitHubProvider implements Provider {
             LOGGER.warn("Error occurred while trying to check if user is member of organization", e);
         }
 
-        return result;
+        return false;
     }
 
     private GitHub getGitHub(PluginSettings pluginSettings) throws IOException {
