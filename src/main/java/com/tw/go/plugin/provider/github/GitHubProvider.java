@@ -82,9 +82,16 @@ public class GitHubProvider implements Provider {
     }
 
     private boolean isAMemberOfOrganization(PluginSettings pluginSettings, User user, AuthProvider authProvider) {
+        if (authProvider.getAccessGrant() == null) {
+            throw new IllegalArgumentException("Authprovider cannot be null");
+        }
+        String key = authProvider.getAccessGrant().getKey();
+        if (key == null || key.equals("")) {
+            throw new IllegalArgumentException("Authprovider token cannot be null");
+        }
         boolean result = false;
         try {
-            String key = authProvider.getAccessGrant().getKey();
+            
             GitHub github = GitHub.connect(user.getDisplayName(), key);
             GHOrganization organization = github.getOrganization(pluginSettings.getOrganisationName());
             GHPersonSet<GHOrganization> myOrganizations = github.getMyself().getAllOrganizations();
